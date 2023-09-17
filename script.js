@@ -102,12 +102,34 @@ function changeBackgroundImageBackward() {
 //   setTimeout(function () {
 //     document.body.classList.remove("beach-and-cafe");
 //   }, 500);
-// });
+// });/* auto data version system */
+
+const PRODUCTS_FILE_PATH = "data.json";
+
+fetch(PRODUCTS_FILE_PATH)
+  .then((response) => response.json())
+  .then((version) => {
+    const productHTML = version.map((version) => {
+      return `
+      <a id="${version.id}" class="hover-img" data-bg="./background/${version.bg}.png"
+      href="${version.download}"><div id="version">
+        <img class="icon" src="src/links/${version.icon}.png" alt="Icon">
+        <span class="text">${version.name}</span>
+        </div>
+      </a>
+            `;
+    });
+
+    const productList = document.getElementById("version-list");
+    productList.innerHTML = productHTML.join("");
+  })
+  .catch((error) => console.error(error));
+
+/*BG*/
 const body = document.body;
 const imageElements = document.querySelectorAll(".hover-img");
 let currentImage = null;
 
-// Preload images
 imageElements.forEach(function (element) {
   const bg = element.getAttribute("data-bg");
   if (bg) {
